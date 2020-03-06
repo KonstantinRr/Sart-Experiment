@@ -7,6 +7,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -14,16 +19,14 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class Main {
+public class Main implements Runnable {
 	public static void main(String[] args) {
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                runUI();
-            }
-        });
+		javax.swing.SwingUtilities.invokeLater(new Main());
 	}
 	
-	public static void runUI() {
+	public void run() {
+		ExecutorService service = Executors.newCachedThreadPool();
+		
 		JFrame frame;
 		frame = new JFrame();
 		frame.setTitle("Experiment Manager");
@@ -33,6 +36,11 @@ public class Main {
 			@Override
 			public void windowClosed(WindowEvent e) {
 				System.out.println("Disposing Main Event Manager");
+				try {
+					service.awaitTermination(10, TimeUnit.SECONDS);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		
@@ -40,11 +48,12 @@ public class Main {
 		centerPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
 		centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 		
+		// Start Time / Go Time / Mask Time / Interval Time
 		ExperimentSettings[] settings = {
-				new ExperimentSettings("Experiment 1", 500, 0.3, 20),
-				new ExperimentSettings("Experiment 2", 1000, 0.3, 20),
-				new ExperimentSettings("Experiment 3", 2000, 0.3, 20),
-				new ExperimentSettings("Experiment 4", 5000, 0.3, 20),
+				new ExperimentSettings("Experiment 1", 5000, 2000, 500, 800, 0.3, 30),
+				new ExperimentSettings("Experiment 2", 5000, 2000, 2000, 800, 0.3, 30),
+				new ExperimentSettings("Experiment 3", 5000, 2000, 4000, 800, 0.3, 30),
+				new ExperimentSettings("Experiment 4", 5000, 2000, 8000, 800, 0.3, 30),
 		};
 		
 		JButton[] buttons = new JButton[settings.length];
@@ -54,13 +63,15 @@ public class Main {
 				for (int i = 0; i < buttons.length; i++) {
 					if (event.getSource() == buttons[i]) {
 						Experiment exp = new Experiment(settings[i]);
-						/*
-						try {
-							exp.runExperiment();
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-						*/
+						Future<?> result = service.submit(exp);
+						WindowListener listener = new WindowAdapter() {
+							@Override
+							public void windowClosed(WindowEvent e) {
+								System.out.println("Disposing Client Experiment Manager");
+								result.cancel(true);
+							}
+						};
+						exp.addWindowListener(listener);
 					}
 				}
 			}
