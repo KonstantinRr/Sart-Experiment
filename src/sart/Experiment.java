@@ -51,7 +51,7 @@ public class Experiment implements Callable<Integer> {
 		
 		frame = new JFrame();
 		frame.setTitle(settings.getName());
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {

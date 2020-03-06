@@ -30,7 +30,7 @@ public class Main implements Runnable {
 		JFrame frame;
 		frame = new JFrame();
 		frame.setTitle("Experiment Manager");
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
