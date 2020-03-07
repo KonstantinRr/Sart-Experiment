@@ -7,6 +7,7 @@ import java.awt.event.WindowListener;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 import java.util.concurrent.Callable;
 
@@ -89,8 +90,8 @@ public class Experiment implements Callable<Integer> {
 		return Integer.toString(new Random().nextInt(10000));
 	}
 	
-	private void updateLabel(String text) {
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+	private void updateLabel(String text) throws InvocationTargetException, InterruptedException {
+		javax.swing.SwingUtilities.invokeAndWait(new Runnable() {
 			@Override
 			public void run() {
 				label.setText(text);
@@ -128,11 +129,31 @@ public class Experiment implements Callable<Integer> {
 		updateLabel("");
 		Thread.sleep(settings.getGoTime());
 		
+		/*
+		int iTime = (int) settings.getIntervalTime() +
+				(int) settings.getMaskTime();
+		Timer swingTimer = new Timer(iTime, new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				isTrial = true;
+				lastTime = System.currentTimeMillis();
+				if (settings.getTrialValues()[currentTrial]) {
+					label.setText("O");
+				} else {
+					label.setText("Q");
+				}
+			}
+		});
+		swingTimer.start();
+		Thread.sleep(settings.getIntervalTime());
+		*/
+		
 		for (int i = 0; i < settings.getTrials(); i++) {
 			System.out.println("Trial " + currentTrial + " of " + settings.getTrials());
 			
 			// Start
-			SwingUtilities.invokeLater(new Runnable() {
+			SwingUtilities.invokeAndWait(new Runnable() {
 				@Override
 				public void run() {
 					isTrial = true;
@@ -148,7 +169,7 @@ public class Experiment implements Callable<Integer> {
 			Thread.sleep(settings.getIntervalTime());
 			
 			// End
-			SwingUtilities.invokeLater(new Runnable() {
+			SwingUtilities.invokeAndWait(new Runnable() {
 				@Override
 				public void run() {
 					isTrial = false;
