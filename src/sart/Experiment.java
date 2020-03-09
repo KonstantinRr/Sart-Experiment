@@ -103,7 +103,10 @@ public class Experiment implements Callable<Integer> {
 			String name, boolean[] stimuli, TrialResponse[] results) throws IOException {
 		FileWriter fileWriter = new FileWriter(name);
 	    PrintWriter printWriter = new PrintWriter(fileWriter);
-	    
+	    printWriter.println(settings.getName());
+	    printWriter.println(settings.getMaskTime());
+	    printWriter.println(settings.getIntervalTime());
+	    printWriter.println("---- DATA ----");
 	    for (int i = 0; i < stimuli.length; i++) {
 	    	printWriter.print(stimuli[i] ? 'O' : 'Q');
 	    	printWriter.print(':');
