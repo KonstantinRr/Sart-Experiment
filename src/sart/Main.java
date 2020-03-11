@@ -50,8 +50,8 @@ public class Main implements Runnable {
 		
 		// Start Time / Go Time / Mask Time / Interval Time
 		ExperimentSettings[] settings = {
-				new ExperimentSettings("Experiment 1 (800ms)", 5000, 2000, 800, 1000, 0.3, 60),
-				new ExperimentSettings("Experiment 2 (6000ms)", 5000, 2000, 6000, 1000, 0.3, 15),
+				new ExperimentSettings("Experiment 1 (800ms)", 5000, 2000, 800, 1000, 0.9, 60),
+				new ExperimentSettings("Experiment 2 (6000ms)", 5000, 2000, 6000, 1000, 0.9, 20),
 		};
 		
 		JButton[] buttons = new JButton[settings.length];

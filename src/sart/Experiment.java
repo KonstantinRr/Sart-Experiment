@@ -56,16 +56,14 @@ public class Experiment implements Callable<Integer> {
 		frame.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if (isTrial &&
-						trialResponses[currentTrial] == null &&
-						e.getKeyChar() == 'o')
+				if (isTrial && trialResponses[currentTrial] == null)
 				{
 					// Received unique event
 					System.out.println("Got char " + e.getKeyChar());
+					String var = new String(new char[] { e.getKeyChar() });
 					
 					long cTime = System.currentTimeMillis();
-					trialResponses[currentTrial] = 
-							new TrialResponse(cTime - lastTime, "O");
+					trialResponses[currentTrial] = new TrialResponse(cTime - lastTime, var);
 				}
 			}
 		});
