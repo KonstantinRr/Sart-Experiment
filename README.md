@@ -6,7 +6,7 @@ if you are not familiar with it. The tool was developed in the course Cognitive 
 
 ## Installing
 The project is build using Java [Eclipse](https://www.eclipse.org/downloads/packages/release/kepler/sr1/eclipse-ide-java-developers).
-Clone the project and it using the Eclipse editor.
+Clone the project and it use the Java Eclipse to run the project.
 ```
 git clone https://github.com/KonstantinRr/Sart-Experiment && cd Sart-Experiment
 ```
